@@ -1,0 +1,31 @@
+FROM ubuntu:20.04
+
+# Install basic development tools
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    git \
+    vim \
+    nano \
+    build-essential \
+    python3 \
+    python3-pip \
+    nodejs \
+    npm \
+    openjdk-11-jdk \
+    golang-go \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create workspace directory
+RUN mkdir -p /workspace
+WORKDIR /workspace
+
+# Set up user permissions
+RUN groupadd -r codeuser && useradd -r -g codeuser codeuser
+RUN chown -R codeuser:codeuser /workspace
+
+# Switch to non-root user
+USER codeuser
+
+# Default command
+CMD ["/bin/bash"]
